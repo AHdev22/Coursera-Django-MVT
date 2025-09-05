@@ -15,3 +15,6 @@ class MenuDetailView(View):
     
 def book_show(request):
     return render(request,"book.html")
+
+def about_show(request):
+    return render(request,"About.html")

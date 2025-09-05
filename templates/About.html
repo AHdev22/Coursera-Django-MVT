@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load static %}
+    {% block extra_css %} <link rel="stylesheet" href="{% static 'About.css' %}"/>{% endblock %}
+{% block content %}
+    <div class="content">
+        <div class="box">
+            <h2>About Us</h2>
+            <p>At Little Lemon, we bring fresh, flavorful dishes inspired by Mediterranean traditions.
+            Our chefs use only the finest ingredients to create meals full of taste and warmth.
+            We believe dining is more than food—it's about sharing moments with loved ones.
+            From our kitchen to your table, every dish is crafted with passion and care.
+            Come experience the zest of life with us at Little Lemon.</p>
+        </div>
+        <img src="{% static 'little.jpg' %}" alt="flower Image">
+    </div>
+{% endblock %}

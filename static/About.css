@@ -1,0 +1,28 @@
+main .content {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 20%;
+    margin-top: 20px;
+}
+
+main .content .box {
+    width: 50%;
+}
+main .content .box h2 {
+    color: black;
+    font-size: 80px;
+    font-weight: bold;
+    letter-spacing: 5px;
+}
+main .content .box p {
+    line-height: 1.2;
+    font-size: 18px;
+    letter-spacing: 1px;
+    color: #333;
+}
+
+main .content img {
+    height: 350px;
+    width: 50%;
+}
