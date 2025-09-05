@@ -8,5 +8,5 @@
     <h2>{{ item.name }}</h2>
     <p>{{ item.description }}</p>
 </div>
-<img src="{% static 'Greek Salad.png' %}" alt="">
+<img src="{{ item.image.url }}" alt="{{ item.name }}">
 {% endblock %}

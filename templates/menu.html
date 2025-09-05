@@ -6,7 +6,7 @@
     <ul>
         {% for item in menu %}
         <li>
-            <a href="{% url 'showitem' item.id %}">{{item.name}}</a>
+            <a href="{% url 'menu-details' item.id %}">{{item.name}}</a>
             <p>${{item.price}}</p>
         </li>
         {% endfor %}
