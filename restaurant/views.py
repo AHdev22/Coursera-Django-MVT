@@ -12,3 +12,6 @@ class MenuDetailView(View):
     def get(self, request, pk):
         item = get_object_or_404(MenuItem, pk=pk)
         return render(request, 'item.html', {'item': item})
+    
+def book_show(request):
+    return render(request,"book.html")

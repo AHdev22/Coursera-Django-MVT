@@ -1,0 +1,59 @@
+main .content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 50px;
+}
+
+.content .box2 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    gap: 10%;
+    margin-top: 10px;
+}
+
+.content .box2 h2 {
+    color: #485d56;
+    font-size: 48px;
+    width: 40%;
+    line-height: 0.8;
+    text-transform: capitalize;
+}
+.content .box2 img {
+    height: 170px;
+    width: 20%;
+}
+
+.content .box2 .smallcontent {
+    width: 40%;
+}
+.content .box2 .smallcontent h3 {
+    color: #485d56;
+    font-size: 24px;
+    font-weight: bold;
+}
+.content .box2 .smallcontent ul li {
+    font-size: 18px;
+    font-weight: bold;
+    color: #485d56;
+}
+
+.content .box2 button {
+    border: none;
+}
+
+.content .box2 button a {
+    text-decoration: none;
+    background-color: #485d56;
+    color: #fff;
+    padding: 20px 40px;
+    border-radius: 5px;
+    border: none;
+    font-size: 18px;
+}
+
+.content .box2 button a:hover {
+    color: black;
+}

@@ -1,0 +1,22 @@
+{% extends "base.html" %} 
+{% load static %} 
+{% block extra_css %} <link rel="stylesheet" href="{% static 'book.css' %}" />{% endblock %} 
+{% block content %}
+<div class="content">
+    <div class="box2">
+        <h2>reserve a table at little lemon and enjoy a delightful dining experience</h2>
+        <img src="{% static 'table.png' %}" alt="table image">
+    </div>
+    <div class="box2">
+        <div class="smallcontent">
+            <h3>Book are quick and easy</h3>
+            <ul>
+                <li>Book with confidence</li>
+                <li>Open daily from 12pm - 9pm</li>
+                <li>Hurry up</li>
+            </ul>
+        </div>
+        <button><a href="">Make a Reservation</a></button>
+    </div>
+</div>
+{% endblock %}
