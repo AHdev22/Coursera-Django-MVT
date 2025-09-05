@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load static %}
+    {% block extra_css %} <link rel="stylesheet" href="{% static 'menu.css' %}"/>{% endblock %}
+{% block content %}
+    <h2>Menu</h2>
+    <ul>
+        {% for item in menu %}
+        <li>
+            <a href="{% url 'showitem' item.id %}">{{item.name}}</a>
+            <p>${{item.price}}</p>
+        </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

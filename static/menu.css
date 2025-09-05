@@ -1,0 +1,19 @@
+main .container h2 {
+    color: black;
+    font-size: 48px;
+    letter-spacing: 2px;
+}
+
+main ul {
+    list-style: none;
+}
+
+main ul li a {
+    font-size:32px;
+    color: orange;
+    text-decoration: none;
+}
+
+main ul li p:last-of-type {
+    font-size:24px;
+}

@@ -1,0 +1,110 @@
+@import url("https://fonts.googleapis.com/css2?family=Markazi+Text:wght@400..700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --maincolor: #485d56;
+    --footercolor: #cccccc;
+}
+
+body {
+    font-family: "Markazi Text", serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.container {
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+header {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 500px;
+    height: 150px;
+}
+
+header .box {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+header .box img {
+    width: 85px;
+    height: 140px;
+}
+
+header .box h1 {
+    color: var(--maincolor);
+    font-size: 48px;
+    letter-spacing: 5px;
+}
+
+nav .container ul {
+    background-color: var(--maincolor);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0px 10px;
+    list-style: none;
+    gap: 41px;
+}
+
+nav .container ul li a {
+    text-decoration: none;
+    color: white;
+    font-size: 32px;
+}
+
+nav .container ul li:hover a {
+    color: black;
+}
+
+main {
+    flex: 1;
+}
+
+footer {
+    height: 104px;
+}
+
+footer .content {
+    background-color: var(--footercolor);
+    padding: 0px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+footer img {
+    width: 60px;
+    height: 80px;
+    border: 3px solid black;
+    padding: 5px;
+    background-color: white;
+}
+footer .content .box {
+    text-align: right;
+}
+
+footer .content .custom-line {
+    height: 1px;
+    width: calc(100vw / 2);
+    background: #000;
+    margin-left: auto;
+    margin-right: 0;
+    margin-bottom: 10px;
+}
+
+footer .content .box p {
+    color: black;
+    font-size: 24px;
+}

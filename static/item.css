@@ -1,0 +1,50 @@
+main .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+main .content {
+    max-width: 50%;
+    padding: 20px;
+    text-align: left;
+}
+
+main .content h1 {
+    font-size: 60px;
+    font-weight: bold;
+    color: black;
+    letter-spacing: 2px;
+}
+
+main .content h2 {
+    font-size: 48px;
+    font-weight: bold;
+    color: orange;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+}
+
+main .content p:first-of-type {
+    font-size: 20px;
+    color: orange;
+    font-weight: bold;
+}
+
+main .content p:first-of-type span {
+    color: black;
+}
+
+main .content p {
+    line-height: 1.2;
+    font-size: 18px;
+    letter-spacing: 1px;
+    color: #333;
+}
+
+main img {
+    margin-top: 20px;
+    max-width: 40%;
+    flex: 1;
+    height: 400px;
+}
