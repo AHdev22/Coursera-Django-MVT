@@ -41,12 +41,11 @@ This project focuses on the **UI side** (templates), not the Django admin panel.
 
 ---
 
-## Project Structure
-│── littlelemon/ # Django project settings
-│── restaurant/ # Main app (menu + reservations)
-│── users/ # User auth & tokens
-│── templates/ # HTML templates (UI)
-│── static/ # CSS, JS, images
-│── manage.py # Django manager
+- littlelemon/ # Django project settings
+- restaurant/ # Main app (menu + reservations)
+- users/ # User auth & tokens
+- templates/ # HTML templates (UI)
+- static/ # CSS, JS, images
+- manage.py # Django manager
 
 ## 📂 Project Structure
