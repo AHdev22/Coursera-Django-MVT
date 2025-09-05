@@ -81,9 +81,9 @@ WSGI_APPLICATION = 'littlelemon.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'your_db_name',      # e.g., 'coursera_mvt'
-        'USER': 'your_db_user',      # e.g., 'root'
-        'PASSWORD': 'your_password', # your MySQL password
+        'NAME': 'coursera_littllelemon_project',      # e.g., 'coursera_mvt'
+        'USER': 'root',      # e.g., 'root'
+        'PASSWORD': 'Amr!amr11', # your MySQL password
         'HOST': 'localhost',         # '127.0.0.1' if local
         'PORT': '3306',              # default MySQL port
         'OPTIONS': {
