@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% load static %}
+    {% block extra_css %} <link rel="stylesheet" href="{% static 'Home.css' %}"/>{% endblock %}
+{% block content %}
+    <h1>Welcome To Little Lemon</h1>
+    <button><a href="{% url 'menu' %}">View Menu</a></button>
+{% endblock %}

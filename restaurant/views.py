@@ -18,3 +18,6 @@ def book_show(request):
 
 def about_show(request):
     return render(request,"About.html")
+
+def home_show(request):
+    return render(request,"Home.html")
