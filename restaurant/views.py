@@ -5,8 +5,8 @@ from django.views import View
 
 class MenuView(View):
     def get(self, request):
-        menu_items = MenuItem.objects.all()
-        return render(request, 'menu.html', {'menu_items': menu_items})
+        menu = MenuItem.objects.all()
+        return render(request, 'menu.html', {'menu': menu})
 
 class MenuDetailView(View):
     def get(self, request, pk):
