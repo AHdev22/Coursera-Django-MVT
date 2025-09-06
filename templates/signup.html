@@ -1,0 +1,82 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>GameHaven</title>
+        <link rel="stylesheet" href="{% static 'style.css' %}" />
+    </head>
+    <body>
+        <div class="wrapper">
+            <h1>Signup</h1>
+
+            <!-- Single error message container for all backend errors -->
+            <p id="error-message">
+                {% if form.errors %}
+                    {% for field, errors in form.errors.items %}
+                        {% for error in errors %}
+                            {{ error }}<br>
+                        {% endfor %}
+                    {% endfor %}
+                {% endif %}
+            </p>
+
+            <form id="form" method="post" action="{% url 'signup_view' %}">
+                {% csrf_token %}
+
+                <!-- Username -->
+                <div>
+                    <label for="firstname-input">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24">
+                            <path d="M480-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM160-160v-112q0-34 17.5-62.5T224-378q62-31 126-46.5T480-440q66 0 130 15.5T736-378q29 15 46.5 43.5T800-272v112H160Z"/>
+                        </svg>
+                    </label>
+                    <input type="text" name="username" id="firstname-input" placeholder="Username" value="{{ form.username.value|default:'' }}">
+                </div>
+
+                <!-- Phone -->
+                <div>
+                    <label for="phone">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" height="24" width="24">
+                            <path d="M224.2 89C216.3 70.1 195.7 60.1 176.1 65.4L170.6 66.9C106 84.5 50.8 147.1 66.9 223.3C104 398.3 241.7 536 416.7 573.1C493 589.3 555.5 534 573.1 469.4L574.6 463.9C580 444.2 569.9 423.6 551.1 415.8L453.8 375.3C437.3 368.4 418.2 373.2 406.8 387.1L368.2 434.3C297.9 399.4 241.3 341 208.8 269.3L253 233.3C266.9 222 271.6 202.9 264.8 186.3L224.2 89z"/>
+                        </svg>
+                    </label>
+                    <input type="text" name="phone" id="phone" placeholder="Phone"
+                           value="{{ form.phone.value|default:'' }}">
+                </div>
+
+                <!-- Email -->
+                <div>
+                    <label for="email-input"><span>@</span></label>
+                    <input type="email" name="email" id="email-input" placeholder="Email" value="{{ form.email.value|default:'' }}">
+                </div>
+
+                <!-- Password -->
+                <div>
+                    <label for="password-input">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24">
+                            <path d="M240-80q-33 0-56.5-23.5T160-160v-400q0-33 23.5-56.5T240-640h40v-80q0-83 58.5-141.5T480-920q83 0 141.5 58.5T680-720v80h40q33 0 56.5 23.5T800-560v400q0 33-23.5 56.5T720-80H240Zm240-200q33 0 56.5-23.5T560-360q0-33-23.5-56.5T480-440q-33 0-56.5 23.5T400-360q0 33 23.5 56.5T480-280ZM360-640h240v-80q0-50-35-85t-85-35q-50 0-85 35t-35 85v80Z"/>
+                        </svg>
+                    </label>
+                    <input type="password" name="password1" id="password-input" placeholder="Password" maxlength="16">
+                </div>
+
+                <!-- Repeat Password -->
+                <div>
+                    <label for="repeat-password-input">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24">
+                            <path d="M240-80q-33 0-56.5-23.5T160-160v-400q0-33 23.5-56.5T240-640h40v-80q0-83 58.5-141.5T480-920q83 0 141.5 58.5T680-720v80h40q33 0 56.5 23.5T800-560v400q0 33-23.5 56.5T720-80H240Zm240-200q33 0 56.5-23.5T560-360q0-33-23.5-56.5T480-440q-33 0-56.5 23.5T400-360q0 33 23.5 56.5T480-280ZM360-640h240v-80q0-50-35-85t-85-35q-50 0-85 35t-35 85v80Z"/>
+                        </svg>
+                    </label>
+                    <input type="password" name="password2" id="repeat-password-input" placeholder="Repeat Password" maxlength="16">
+                </div>
+
+                <button type="submit">Signup</button>
+            </form>
+
+            <p>Already have an Account? <a href="index.html">login</a></p>
+            <script src="{% static 'validation.js' %}"></script>
+        </div>
+    </body>
+</html>
