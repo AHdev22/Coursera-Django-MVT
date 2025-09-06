@@ -1,6 +1,9 @@
 # Create your views here.
+from django.contrib import messages
 from django.shortcuts import render, redirect
 from .forms import CustomUserCreationForm
+from django.contrib.auth import authenticate, login
+
 
 def signup_view(request):
     if request.method == "POST":
@@ -15,3 +18,19 @@ def signup_view(request):
     
     return render(request, 'signup.html', {'form': form})
 
+
+
+def login_view(request):
+    if request.method == "POST":
+        email = request.POST.get("email")
+        password = request.POST.get("password")
+        user = authenticate(request, username=email, password=password)
+
+        if user is not None:
+            login(request, user)
+            return redirect("home_show")  # change to your home page url name
+        else:
+            messages.error(request, "Invalid email or password")
+            return render(request, "login.html", {"email": email})
+    else:
+        return render(request, "login.html")
