@@ -1,6 +1,7 @@
-from django.shortcuts import get_object_or_404, render
-from .models import MenuItem
+from django.shortcuts import get_object_or_404, render,redirect
+from .models import MenuItem,Reservation
 from django.views import View
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 class MenuView(View):
@@ -21,3 +22,41 @@ def about_show(request):
 
 def home_show(request):
     return render(request,"Home.html")
+
+
+
+
+def reservation_page(request):
+    date = None
+
+    if request.method == "POST":
+        # Create a reservation
+        date = request.POST.get("date")
+        time = request.POST.get("time")
+
+        if date and time:
+            Reservation.objects.create(
+                user=request.user,
+                date=date,
+                time=time,
+            )
+        # after saving, we still want to show reservations for the same date
+
+    else:
+        # GET request
+        date = request.GET.get("date")
+
+    # If a date is chosen (either POST or GET), show reservations
+    reservations = None
+    if date:
+        reservations = (
+            Reservation.objects.filter(date=date)
+            .select_related("user")
+            .order_by("time")
+        )
+
+    return render(
+        request,
+        "reservation.html",
+        {"reservations": reservations, "date": date},
+    )

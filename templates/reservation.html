@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'reservation.css' %}"/>
+{% endblock %}
+
+{% block content %}
+<h2 class="main-header">Make a reservation</h2>
+<div class="content">
+
+    <!-- Reservation form -->
+    <form action="" method="post">
+        {% csrf_token %}
+        <div class="input">
+            <label for="date">Reservation date:</label>
+            <input type="date" id="date" name="date" value="{{ date }}" onchange="this.form.submit()" required>
+        </div>
+        <div class="input">
+            <label for="time">Reservation time:</label>
+            <input list="time-options" id="time" name="time" required>
+            <datalist id="time-options">
+                <option value="12:00 PM">
+                <option value="12:30 PM">
+                <option value="1:00 PM">
+                <option value="1:30 PM">
+                <option value="2:00 PM">
+                <option value="2:30 PM">
+                <option value="3:00 PM">
+                <option value="3:30 PM">
+                <option value="4:00 PM">
+                <option value="4:30 PM">
+                <option value="5:00 PM">
+                <option value="5:30 PM">
+                <option value="6:00 PM">
+                <option value="6:30 PM">
+                <option value="7:00 PM">
+                <option value="7:30 PM">
+                <option value="8:00 PM">
+                <option value="8:30 PM">
+            </datalist>
+        </div>
+        <button type="submit">Reserve</button>
+    </form>
+
+    <!-- Show reservations -->
+    <div class="text">
+        {% if reservations %}
+            <h2>Reservations for {{ date }}</h2>
+            {% for reserver in reservations %}
+                <p>{{ reserver.user.username }} - {{ reserver.time }}</p>
+            {% endfor %}
+        {% elif date %}
+            <h2>No reservations found for {{ date }}</h2>
+        {% else %}
+            <h2>Please choose a date to see reservations.</h2>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
