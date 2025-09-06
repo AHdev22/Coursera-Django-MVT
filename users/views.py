@@ -34,3 +34,5 @@ def login_view(request):
             return render(request, "login.html", {"email": email})
     else:
         return render(request, "login.html")
+
+
