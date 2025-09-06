@@ -15,7 +15,7 @@ This project focuses on the **UI side** (templates), not the Django admin panel.
 - **User Accounts**
   - Registration with encrypted password storage
   - Login & logout functionality
-  - Token generated for each logged-in user
+  - Django’s built-in authentication uses sessions and cookies for each logged-in user
 
 - **Restaurant Menu**
   - Display menu items (name, description, price)
@@ -28,7 +28,7 @@ This project focuses on the **UI side** (templates), not the Django admin panel.
 
 - **Security**
   - Passwords stored using Django’s secure hashing system
-  - Token authentication applied for logged-in sessions
+  - Django’s built-in authentication uses sessions and cookies.
   - CSRF protection enabled for forms
 
 ---
@@ -36,7 +36,7 @@ This project focuses on the **UI side** (templates), not the Django admin panel.
 ## 🛠️ Tech Stack
 - **Backend Framework**: Django (MVT pattern)  
 - **Database**: MySQL    
-- **Authentication**: Custom token authentication + Django sessions  
+- **Authentication**: Django sessions  
 - **Templates**: HTML, CSS (basic UI)  
 
 ---
