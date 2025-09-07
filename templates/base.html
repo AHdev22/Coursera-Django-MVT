@@ -38,7 +38,33 @@
                             >
                         </li>
                     </ul>
-                    <img src="{% static 'profile_login.png' %}" alt="" />
+                    <div class="profile">
+                        <img
+                            src="{% static 'profile_login.png' %}"
+                            alt="Profile"
+                            class="profile-img"
+                        />
+                        <!-- % url 'edit_profile' %}   -->
+                        <div class="dropdown">
+                            <a href="">Edit Profile</a>
+                            {% if user.is_authenticated %}
+                            <!-- Logout button -->
+                            <form
+                                method="post"
+                                action="{% url 'logout' %}"
+                                style="display: inline"
+                            >
+                                {% csrf_token %}
+                                <button type="submit" class="link-button">
+                                    Logout
+                                </button>
+                            </form>
+                            {% else %}
+                            <!-- Login link -->
+                            <a href="{% url 'login_view' %}">Login</a>
+                            {% endif %}
+                        </div>
+                    </div>
                 </div>
             </div>
         </nav>
@@ -56,5 +82,23 @@
                 </div>
             </div>
         </footer>
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                const profile = document.querySelector(".profile");
+                const dropdown = document.querySelector(".dropdown");
+
+                profile.addEventListener("click", () => {
+                    dropdown.style.display =
+                        dropdown.style.display === "block" ? "none" : "block";
+                });
+
+                // Optional: close dropdown if clicked outside
+                document.addEventListener("click", (e) => {
+                    if (!profile.contains(e.target)) {
+                        dropdown.style.display = "none";
+                    }
+                });
+            });
+        </script>
     </body>
 </html>

@@ -53,12 +53,57 @@ nav .container .nav {
     display: flex;
     justify-content: space-around;
 }
-nav .container .nav img {
+
+nav .container .nav .profile {
+    position: relative;
+    cursor: pointer;
+}
+
+nav .container .nav .profile img {
     width: 40px;
     height: 40px;
+    border-radius: 50%; /* make it circular */
     object-fit: cover;
+    border: 2px solid #ddd;
     margin-right: 30px;
+}
+
+.dropdown {
+    display: none; /* hidden by default */
+    position: absolute;
+    top: 50px;
+    right: 0;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    min-width: 150px;
+    z-index: 100;
+}
+
+.dropdown a {
+    display: block;
+    padding: 10px;
+    text-decoration: none;
+    color: black;
+}
+
+.dropdown form button {
+    border: none;
+    outline: none;
+    background: none;
+    width: 100%;
+    text-align: left;
     cursor: pointer;
+    padding: 10px;
+}
+
+.dropdown a:hover {
+    background: #f0f0f0;
+}
+
+.dropdown form button:hover {
+    background: #f0f0f0;
 }
 
 nav .container ul {
