@@ -48,14 +48,27 @@ header .box h1 {
     letter-spacing: 5px;
 }
 
-nav .container ul {
+nav .container .nav {
     background-color: var(--maincolor);
+    display: flex;
+    justify-content: space-around;
+}
+nav .container .nav img {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    margin-right: 30px;
+    cursor: pointer;
+}
+
+nav .container ul {
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 0px 10px;
     list-style: none;
     gap: 41px;
+    flex: 1;
 }
 
 nav .container ul li a {

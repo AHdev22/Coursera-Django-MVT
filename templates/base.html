@@ -26,15 +26,20 @@
         </header>
         <nav>
             <div class="container">
-                <ul>
-                    <li><a href="{% url 'home_show' %}">Home</a></li>
-                    <li><a href="{% url 'about_show' %}">About</a></li>
-                    <li><a href="{% url 'menu' %}">Menu</a></li>
-                    <li><a href="{% url 'book_show' %}">Book</a></li>
-                    <li>
-                        <a href="{% url 'reservation_page' %}">Reservation</a>
-                    </li>
-                </ul>
+                <div class="nav">
+                    <ul>
+                        <li><a href="{% url 'home_show' %}">Home</a></li>
+                        <li><a href="{% url 'about_show' %}">About</a></li>
+                        <li><a href="{% url 'menu' %}">Menu</a></li>
+                        <li><a href="{% url 'book_show' %}">Book</a></li>
+                        <li>
+                            <a href="{% url 'reservation_page' %}"
+                                >Reservation</a
+                            >
+                        </li>
+                    </ul>
+                    <img src="{% static 'profile_login.png' %}" alt="" />
+                </div>
             </div>
         </nav>
         <main>
