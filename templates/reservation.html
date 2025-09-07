@@ -40,6 +40,11 @@
                 <option value="8:30 PM">
             </datalist>
         </div>
+        {% if messages %}
+            {% for message in messages %}
+                <p id="para">{{ message }}</p>
+            {% endfor %}
+        {% endif %}
         <button type="submit">Reserve</button>
     </form>
 

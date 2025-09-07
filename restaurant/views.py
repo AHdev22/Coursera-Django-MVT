@@ -26,28 +26,45 @@ def home_show(request):
 
 
 
+from datetime import datetime
+
+from django.contrib import messages
+from datetime import datetime
+
 def reservation_page(request):
     date = None
+    reservations = None
 
     if request.method == "POST":
-        # Create a reservation
         date = request.POST.get("date")
         time = request.POST.get("time")
 
         if date and time:
-            Reservation.objects.create(
-                user=request.user,
-                date=date,
-                time=time,
-            )
-        # after saving, we still want to show reservations for the same date
+            try:
+                # Convert both "1:30 PM" and "13:30"
+                try:
+                    time_obj = datetime.strptime(time, "%I:%M %p").time()
+                except ValueError:
+                    time_obj = datetime.strptime(time, "%H:%M").time()
+
+                # 🔹 check if this slot is already taken
+                exists = Reservation.objects.filter(date=date, time=time_obj).exists()
+                if exists:
+                    messages.error(request, "This time slot is already reserved!")
+                else:
+                    Reservation.objects.create(
+                        user=request.user,
+                        date=date,
+                        time=time_obj,
+                    )
+                    messages.success(request, "Reservation created successfully!")
+
+            except ValueError:
+                messages.error(request, "Invalid time format.")
 
     else:
-        # GET request
         date = request.GET.get("date")
 
-    # If a date is chosen (either POST or GET), show reservations
-    reservations = None
     if date:
         reservations = (
             Reservation.objects.filter(date=date)

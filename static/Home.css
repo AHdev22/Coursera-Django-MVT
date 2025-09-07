@@ -25,3 +25,7 @@ main button a {
     border: none;
     font-size: 18px;
 }
+
+main button a:hover {
+    color: black;
+}
