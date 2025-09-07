@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/5.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
-
+from decouple import config
 from pathlib import Path
 import os
 
@@ -25,7 +25,7 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-2mq!0q-#bw83@nkj7y5b-q5u5vpe4iv0(@mo&%e&!e&y(tjj9='
+SECRET_KEY = 'SECRET_KEY'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -83,12 +83,12 @@ WSGI_APPLICATION = 'littlelemon.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'coursera_littllelemon_project',      # e.g., 'coursera_mvt'
-        'USER': '',      # e.g., 'root'
-        'PASSWORD': '', # your MySQL password
-        'HOST': 'localhost',         # '127.0.0.1' if local
-        'PORT': '3306',              # default MySQL port
+        'ENGINE': 'django.db.backends.postgresql',  # or sqlite if you're using it
+        'NAME': config('DB_NAME'),
+        'USER': config('DB_USER'),
+        'PASSWORD': config('DB_PASSWORD'),
+        'HOST': config('DB_HOST'),
+        'PORT': config('DB_PORT'),
         'OPTIONS': {
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'" # To Throw an Error 
         } 
@@ -151,6 +151,5 @@ AUTHENTICATION_BACKENDS = [
 # settings.py
 LOGIN_URL = 'login_view'  # the name of your login URL
 LOGIN_REDIRECT_URL = 'home_show'  # optional: where to go after login
-
 
 
