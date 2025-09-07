@@ -24,14 +24,10 @@ def about_show(request):
     return render(request,"About.html")
 
 def home_show(request):
-    return render(request,"Home.html")
+    profile = request.user.profile if request.user.is_authenticated else None
+    return render(request, "Home.html", {"profile": profile})
 
 
-
-from django.contrib import messages
-from django.shortcuts import render
-from datetime import datetime
-from .models import Reservation
 
 def reservation_page(request):
     date = None

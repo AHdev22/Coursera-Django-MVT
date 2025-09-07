@@ -40,9 +40,10 @@
                     </ul>
                     <div class="profile">
                         <img
-                            src="{% static 'profile_login.png' %}"
+                            src="{% if user.is_authenticated %}{{ user.profile.profile_image.url }}{% else %}/media/profiles/profile_login.png{% endif %}"
                             alt="Profile"
-                            class="profile-img"
+                            width="50"
+                            height="50"
                         />
                         <!-- % url 'edit_profile' %}   -->
                         <div class="dropdown">

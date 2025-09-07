@@ -3,7 +3,10 @@ from django.contrib import messages
 from django.shortcuts import render, redirect
 from .forms import CustomUserCreationForm
 from django.contrib.auth import authenticate, login
-
+from django.contrib.auth import logout
+from django.views.decorators.http import require_POST
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
 def signup_view(request):
     if request.method == "POST":
@@ -36,11 +39,7 @@ def login_view(request):
         return render(request, "login.html")
 
 
-# views.py
-from django.contrib.auth import logout
-from django.shortcuts import redirect
-from django.views.decorators.http import require_POST
-from django.contrib import messages
+
 
 @require_POST
 def logout_view(request):
@@ -48,3 +47,15 @@ def logout_view(request):
     return redirect('home_show')   # change to your landing page
 
 
+
+@login_required
+def edit_profile(request):
+    profile = request.user.profile
+
+    if request.method == "POST":
+        if "image" in request.FILES:
+            profile.image = request.FILES["image"]
+            profile.save()
+            return redirect("profile")  # redirect to profile page
+
+    return render(request, "users/edit_profile.html", {"profile": profile})
