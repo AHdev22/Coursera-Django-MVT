@@ -2,6 +2,9 @@ from django.shortcuts import get_object_or_404, render,redirect
 from .models import MenuItem,Reservation
 from django.views import View
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from datetime import datetime
+
 # Create your views here.
 
 class MenuView(View):
@@ -25,11 +28,10 @@ def home_show(request):
 
 
 
-
-from datetime import datetime
-
 from django.contrib import messages
+from django.shortcuts import render
 from datetime import datetime
+from .models import Reservation
 
 def reservation_page(request):
     date = None
@@ -40,31 +42,36 @@ def reservation_page(request):
         time = request.POST.get("time")
 
         if date and time:
-            try:
-                # Convert both "1:30 PM" and "13:30"
+            # 🔹 First: check login
+            if not request.user.is_authenticated:
+                messages.error(request, "You must login first to make a reservation.")
+            else:
                 try:
-                    time_obj = datetime.strptime(time, "%I:%M %p").time()
+                    # Convert "1:30 PM" or "13:30"
+                    try:
+                        time_obj = datetime.strptime(time, "%I:%M %p").time()
+                    except ValueError:
+                        time_obj = datetime.strptime(time, "%H:%M").time()
+
+                    # Check if slot already reserved
+                    exists = Reservation.objects.filter(date=date, time=time_obj).exists()
+                    if exists:
+                        messages.error(request, "This time slot is already reserved!")
+                    else:
+                        Reservation.objects.create(
+                            user=request.user,
+                            date=date,
+                            time=time_obj,
+                        )
+                        messages.success(request, "Reservation created successfully!")
+
                 except ValueError:
-                    time_obj = datetime.strptime(time, "%H:%M").time()
-
-                # 🔹 check if this slot is already taken
-                exists = Reservation.objects.filter(date=date, time=time_obj).exists()
-                if exists:
-                    messages.error(request, "This time slot is already reserved!")
-                else:
-                    Reservation.objects.create(
-                        user=request.user,
-                        date=date,
-                        time=time_obj,
-                    )
-                    messages.success(request, "Reservation created successfully!")
-
-            except ValueError:
-                messages.error(request, "Invalid time format.")
+                    messages.error(request, " Invalid time format.")
 
     else:
         date = request.GET.get("date")
 
+    # 🔹 Always show reservations for the selected date
     if date:
         reservations = (
             Reservation.objects.filter(date=date)
