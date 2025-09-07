@@ -85,8 +85,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'coursera_littllelemon_project',      # e.g., 'coursera_mvt'
-        'USER': 'root',      # e.g., 'root'
-        'PASSWORD': 'Amr!amr11', # your MySQL password
+        'USER': '',      # e.g., 'root'
+        'PASSWORD': '', # your MySQL password
         'HOST': 'localhost',         # '127.0.0.1' if local
         'PORT': '3306',              # default MySQL port
         'OPTIONS': {
@@ -147,5 +147,10 @@ AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",
     "users.backends.EmailBackend",  # <-- add this
 ]
+
+# settings.py
+LOGIN_URL = 'login_view'  # the name of your login URL
+LOGIN_REDIRECT_URL = 'home_show'  # optional: where to go after login
+
 
 

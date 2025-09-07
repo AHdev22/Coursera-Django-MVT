@@ -39,15 +39,20 @@
                         </li>
                     </ul>
                     <div class="profile">
+                        {% if user.is_authenticated and user.profile %}
                         <img
-                            src="{% if user.is_authenticated %}{{ user.profile.profile_image.url }}{% else %}/media/profiles/profile_login.png{% endif %}"
+                            src="{{ user.profile.profile_image.url }}"
                             alt="Profile"
-                            width="50"
-                            height="50"
                         />
+                        {% else %}
+                        <img
+                            src="/media/profiles/profile_login.png"
+                            alt="Profile"
+                        />
+                        {% endif %}
                         <!-- % url 'edit_profile' %}   -->
                         <div class="dropdown">
-                            <a href="">Edit Profile</a>
+                            <a href="{% url 'edit_profile' %}">Edit Profile</a>
                             {% if user.is_authenticated %}
                             <!-- Logout button -->
                             <form

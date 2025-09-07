@@ -1,0 +1,63 @@
+{% extends "base.html" %} 
+{% load static %} 
+{% block extra_css %}<link rel="stylesheet" href="{% static 'profile.css' %}" />{% endblock %} 
+
+{% block content %}
+<div class="content">
+    <div class="image"></div>
+    <div class="form">
+        <h2>Edit Profile</h2>
+
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <label>Username (read-only)</label>
+            <input
+                type="text"
+                name="username"
+                value="{{ user.username }}"
+                readonly
+            />
+
+            <label>Email</label>
+            <input
+                type="email"
+                name="email"
+                value="{{ user.email }}"
+                required
+            />
+
+            <label>Phone</label>
+            <input type="text" name="phone" value="{{ profile.phone }}" />
+
+            <label>Profile Image</label>
+            <input type="file" name="image" />
+
+            <button type="submit" name="update_profile">Save Profile</button>
+        </form>
+
+        <h2>Change Password</h2>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <label>Current Password</label>
+            <input type="password" name="current_password" required />
+
+            <label>New Password</label>
+            <input type="password" name="new_password" required />
+
+            <label>Confirm New Password</label>
+            <input type="password" name="confirm_password" required />
+
+            <button type="submit" name="change_password">
+                Change Password
+            </button>
+        </form>
+
+        {% for message in messages %}
+        <p>{{ message }}</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
