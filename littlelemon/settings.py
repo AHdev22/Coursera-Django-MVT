@@ -28,7 +28,7 @@ MEDIA_ROOT = BASE_DIR / 'media'
 SECRET_KEY = 'SECRET_KEY'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
@@ -83,17 +83,18 @@ WSGI_APPLICATION = 'littlelemon.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',  # or sqlite if you're using it
+        'ENGINE': 'django.db.backends.mysql',  # Use MySQL backend
         'NAME': config('DB_NAME'),
         'USER': config('DB_USER'),
         'PASSWORD': config('DB_PASSWORD'),
         'HOST': config('DB_HOST'),
-        'PORT': config('DB_PORT'),
+        'PORT': config('DB_PORT', default='3306'),  # MySQL default port
         'OPTIONS': {
-            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'" # To Throw an Error 
-        } 
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",  # Enforce strict mode
+        },
     }
 }
+
 
 
 # Password validation
@@ -153,3 +154,11 @@ LOGIN_URL = 'login_view'  # the name of your login URL
 LOGIN_REDIRECT_URL = 'home_show'  # optional: where to go after login
 
 
+from decouple import config
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = config('EMAIL_HOST')
+EMAIL_PORT = config('EMAIL_PORT', cast=int)
+EMAIL_USE_TLS = config('EMAIL_USE_TLS', cast=bool)
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
