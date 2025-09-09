@@ -1,44 +1,52 @@
-{% extends "base.html" %} 
-{% load static %} 
-{% block extra_css %}<link rel="stylesheet" href="{% static 'profile.css' %}" />{% endblock %} 
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'profile.css' %}" />
+<!-- Cropper.js CSS -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" rel="stylesheet">
+
+{% endblock %}
 
 {% block content %}
 <div class="content">
-    <div class="image"></div>
     <div class="form">
-        <h2>Edit Profile</h2>
-
-        <form method="POST" enctype="multipart/form-data">
+        <!-- Profile form -->
+        <form method="POST" enctype="multipart/form-data" class="profile">
             {% csrf_token %}
+            <div class="image">
+                {% if profile.profile_image %}
+                    <img id="preview" src="{{ profile.profile_image.url }}" alt="Profile">
+                {% else %}
+                    <img id="preview" src="/media/profiles/profile_login.png" alt="Default Profile">
+                {% endif %}
 
-            <label>Username (read-only)</label>
-            <input
-                type="text"
-                name="username"
-                value="{{ user.username }}"
-                readonly
-            />
+                <!-- Label styled as a button -->
+                <label for="uploadImage" class="upload-btn">Upload Photo</label>
+                
+                <!-- Hidden file input -->
+                <input type="file" id="uploadImage" name="image" accept="image/*" hidden />
+                <input type="hidden" name="cropped_image" id="croppedImage">
+            </div>
 
-            <label>Email</label>
-            <input
-                type="email"
-                name="email"
-                value="{{ user.email }}"
-                required
-            />
 
-            <label>Phone</label>
-            <input type="text" name="phone" value="{{ profile.phone }}" />
 
-            <label>Profile Image</label>
-            <input type="file" name="image" />
+            <div class="inputs">
+                <label>Username</label>
+                <input type="text" name="username" value="{{ user.username }}" readonly />
 
-            <button type="submit" name="update_profile">Save Profile</button>
+                <label>Email</label>
+                <input type="email" name="email" value="{{ user.email }}" required />
+
+                <label>Phone</label>
+                <input type="text" name="phone" value="{{ profile.phone }}" />
+
+                <button type="submit" name="update_profile">Save Profile</button>
+            </div>
         </form>
-
-        <h2>Change Password</h2>
-
-        <form method="POST">
+    
+        <!-- Password form -->
+        <form method="POST" class="password">
             {% csrf_token %}
 
             <label>Current Password</label>
@@ -50,14 +58,95 @@
             <label>Confirm New Password</label>
             <input type="password" name="confirm_password" required />
 
-            <button type="submit" name="change_password">
-                Change Password
-            </button>
+            <button type="submit" name="change_password">Change Password</button>
         </form>
 
         {% for message in messages %}
-        <p>{{ message }}</p>
+        <div class="custom-alert {{ message.tags }}">
+            <div class="alert-box">
+                <p>{{ message }}</p>
+                <button class="alert-btn">OK</button>
+            </div>
+        </div>
         {% endfor %}
+
     </div>
 </div>
+
+<!-- Cropper.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+<script>
+let cropper;
+const uploadImage = document.getElementById('uploadImage');
+const preview = document.getElementById('preview');
+const croppedImageInput = document.getElementById('croppedImage');
+
+uploadImage.addEventListener('change', (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+        preview.src = reader.result;
+        if (cropper) cropper.destroy();
+        cropper = new Cropper(preview, {
+            aspectRatio: 1, // square (shown as circle overlay)
+            viewMode: 1
+        });
+    };
+    reader.readAsDataURL(file);
+});
+
+document.querySelector('.profile').addEventListener('submit', (e) => {
+    const fileInput = document.getElementById("uploadImage");
+    const croppedImageInput = document.getElementById("croppedImage");
+    const emailInput = document.querySelector("input[name='email']");
+    const phoneInput = document.querySelector("input[name='phone']");
+
+    // ---- Validate Email ----
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(emailInput.value.trim())) {
+        e.preventDefault();
+        alert("⚠️ Please enter a valid email address.");
+        emailInput.focus();
+        return;
+    }
+
+    // ---- Validate Egyptian Phone ----
+    const phoneRegex = /^01[0-2,5][0-9]{8}$/;
+    if (phoneInput.value.trim() && !phoneRegex.test(phoneInput.value.trim())) {
+        e.preventDefault();
+        alert("⚠️ Please enter a valid Egyptian phone number (010, 011, 012, 015).");
+        phoneInput.focus();
+        return;
+    }
+
+    // ---- Validate Cropped Image ----
+    if (fileInput.files.length && cropper) {
+        const canvas = cropper.getCroppedCanvas({
+            width: 300,
+            height: 300
+        });
+
+        if (!canvas) {
+            e.preventDefault();
+            alert("⚠️ Please crop the selected image before saving.");
+            return;
+        }
+
+        croppedImageInput.value = canvas.toDataURL("image/png");
+    }
+});
+
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll(".custom-alert .alert-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+            btn.closest(".custom-alert").style.display = "none";
+        });
+    });
+});
+
+
+</script>
 {% endblock %}

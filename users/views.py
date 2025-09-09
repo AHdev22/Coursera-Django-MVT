@@ -11,7 +11,9 @@ from .models import Profile
 from .utils import send_verification_email
 from django.contrib.auth.models import User
 from django.conf import settings
-
+import re
+from django.core.files.base import ContentFile
+import base64
 
 
 
@@ -118,13 +120,11 @@ def verify_otp(request):
     })
 
 
-
-
-
 @require_POST
 def logout_view(request):
     logout(request)
     return redirect('home_show')   # change to your landing page
+
 
 
 @login_required
@@ -134,34 +134,54 @@ def edit_profile(request):
 
     if request.method == "POST":
 
-        # ---- Profile update ----
         if "update_profile" in request.POST:
-            email = request.POST.get("email")
-            phone = request.POST.get("phone")
-            image = request.FILES.get("image")
+            email = request.POST.get("email", "").strip()
+            phone = request.POST.get("phone", "").strip()
+            cropped_image = request.POST.get("cropped_image")
+            raw_image = request.FILES.get("image")
 
-            # Update email
-            if email and email != user.email:
-                
+            # ---- Email validation ----
+            if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
+                messages.error(request, "❌ Invalid email format.")
+                return redirect("edit_profile")
+
+            # ---- Phone validation (Egypt format only, but no verification SMS) ----
+            if phone and not re.match(r"^01[0-2,5][0-9]{8}$", phone):
+                messages.error(request, "❌ Invalid Egyptian phone number (010/011/012/015).")
+                return redirect("edit_profile")
+
+            # ---- Email update with verification ----
+            if email != user.email:
                 user.email = email
                 user.save()
+                profile.email_verified = False   # custom field in Profile model
+                profile.save()
+                code = profile.generate_verification_code()
+                send_verification_email(user.email, code) 
+                messages.info(request, "📧 Verification email sent. Please check your inbox.")
+                return redirect("verify_otp")     
 
-            # Update phone
-            if phone:
-                # Optionally: send verification SMS here
+            # ---- Phone update (save only, no SMS) ----
+            if phone != profile.phone:
                 profile.phone = phone
 
-            # Update image
-            if image:
+            # ---- Handle profile image ----
+            if cropped_image:
+                format, imgstr = cropped_image.split(';base64,')
+                ext = format.split('/')[-1]
+                file = ContentFile(base64.b64decode(imgstr), name=f"profile.{ext}")
                 if profile.profile_image:
-                    profile.profile_image.delete(save=False)  # delete old file from disk
-                profile.profile_image = image
-                
+                    profile.profile_image.delete(save=False)
+                profile.profile_image = file
+            elif raw_image:
+                if profile.profile_image:
+                    profile.profile_image.delete(save=False)
+                profile.profile_image = raw_image
+
             profile.save()
             messages.success(request, "✅ Profile updated successfully!")
-            return redirect('edit_profile')
+            return redirect("edit_profile")
 
-        # ---- Password change ----
         elif "change_password" in request.POST:
             current_password = request.POST.get("current_password")
             new_password = request.POST.get("new_password")
@@ -170,15 +190,12 @@ def edit_profile(request):
             if not user.check_password(current_password):
                 messages.error(request, "❌ Current password is incorrect.")
             elif new_password != confirm_password:
-                messages.error(request, "❌ New passwords do not match.")
+                messages.error(request, "❌ Passwords do not match.")
             else:
                 user.set_password(new_password)
                 user.save()
-                update_session_auth_hash(request, user)  # keep logged in
+                update_session_auth_hash(request, user)
                 messages.success(request, "✅ Password changed successfully!")
-                return redirect('edit_profile')
+                return redirect("edit_profile")
 
-    return render(request, "profile.html", {
-        "user": user,
-        "profile": profile
-    })
+    return render(request, "profile.html", {"user": user, "profile": profile})
