@@ -3,33 +3,139 @@
 <head>
     <meta charset="UTF-8">
     <title>Verify Email</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #485d56;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background: white;
+            padding: 30px 40px;
+            border-radius: 15px;
+            text-align: center;
+            width: 350px;
+            box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .icon {
+            width: 60px;
+            height: 60px;
+            background: #485d56;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 20px;
+            color: white;
+            font-size: 28px;
+        }
+
+        h2 {
+            margin-bottom: 5px;
+            font-size: 22px;
+            color: #333;
+        }
+
+        h3 {
+            font-size: 14px;
+            color: #777;
+            margin-bottom: 20px;
+        }
+
+        ul {
+            padding: 0;
+            list-style: none;
+        }
+        ul li {
+            color: red;
+            font-size: 13px;
+            margin-bottom: 10px;
+        }
+
+        .code-input {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            outline: none;
+            margin-bottom: 20px;
+            text-align: center;
+            letter-spacing: 4px;
+        }
+
+        .code-input:focus {
+            border-color: #485d56;
+            box-shadow: 0px 0px 6px #485d56;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #485d56;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-bottom: 10px;
+        }
+
+        button:hover {
+            color: black;
+        }
+
+        .resend-btn {
+            background: transparent;
+            border: none;
+            color: #485d56;
+            font-size: 14px;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        #countdown, #attempts {
+            font-size: 13px;
+            color: #555;
+            margin-top: 10px;
+        }
+    </style>
 </head>
 <body>
-    <h2>Verify Your Email</h2>
-    <h3>{{ email }}</h3>
+    <div class="container">
+        <div class="icon">✔</div>
+        <h2>Verify Your Email</h2>
+        <h3>{{ email }}</h3>
 
-    {% if messages %}
-    <ul>
-        {% for message in messages %}
-        <li style="color: red">{{ message }}</li>
-        {% endfor %}
-    </ul>
-    {% endif %}
+        {% if messages %}
+        <ul>
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
 
-    <form method="post" action="{% url 'verify_otp' %}">
-        {% csrf_token %}
-        <label>Enter Code:</label>
-        <input type="text" name="code" maxlength="6" required />
-        <button type="submit">Verify</button>
-    </form>
+        <form method="post" action="{% url 'verify_otp' %}">
+            {% csrf_token %}
+            <input type="text" name="code" maxlength="6" class="code-input" placeholder="Enter 6-digit code" required />
+            <button type="submit">Verify</button>
+        </form>
 
-    <form method="post" action="{% url 'resend_code' %}">
-        {% csrf_token %}
-        <button type="submit">Resend Code</button>
-    </form>
+        <form method="post" action="{% url 'resend_code' %}">
+            {% csrf_token %}
+            <button type="submit" class="resend-btn">Resend Code</button>
+        </form>
 
-    <p id="countdown"></p>
-    <p>Remaining attempts: <span id="attempts">{{ attempts_left }}</span></p>
+        <p id="countdown"></p>
+        <p>Remaining attempts: <span id="attempts">{{ attempts_left }}</span></p>
+    </div>
 
     <script>
         var expiryTime = Number("{{ expiry_time|default:0 }}");
@@ -52,6 +158,5 @@
         var timer = setInterval(updateCountdown, 1000);
         updateCountdown();
     </script>
-
 </body>
 </html>
