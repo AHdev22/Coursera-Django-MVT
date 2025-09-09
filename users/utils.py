@@ -9,7 +9,7 @@ def generate_otp():
 def send_verification_email(email, otp):
     """Send the OTP to user's email."""
     subject = "Your Verification Code"
-    message = f"Your verification code is: {otp}\nThis code is valid for 5 minutes."
+    message = f"Your verification code is: {otp}\nThis code is valid for 1 minutes."
     from_email = settings.DEFAULT_FROM_EMAIL
     recipient_list = [email]
     
