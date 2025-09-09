@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Verify Email</title>
+</head>
+<body>
+    <h2>Verify Your Email</h2>
+    <h3>{{ email }}</h3>
+
+    {% if messages %}
+    <ul>
+        {% for message in messages %}
+        <li style="color: red">{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    <form method="post" action="{% url 'verify_otp' %}">
+        {% csrf_token %}
+        <label>Enter Code:</label>
+        <input type="text" name="code" maxlength="6" required />
+        <button type="submit">Verify</button>
+    </form>
+
+    <form method="post" action="{% url 'resend_code' %}">
+        {% csrf_token %}
+        <button type="submit">Resend Code</button>
+    </form>
+
+    <p id="countdown"></p>
+    <p>Remaining attempts: <span id="attempts">{{ attempts_left }}</span></p>
+
+    <script>
+        var expiryTime = Number("{{ expiry_time|default:0 }}");
+        var countdownEl = document.getElementById("countdown");
+
+        function updateCountdown() {
+            var now = Math.floor(Date.now() / 1000);
+            var secondsLeft = expiryTime - now;
+
+            if (secondsLeft > 0) {
+                var minutes = Math.floor(secondsLeft / 60);
+                var seconds = secondsLeft % 60;
+                countdownEl.textContent = minutes + "m " + seconds + "s remaining";
+            } else {
+                countdownEl.textContent = "Code expired. Please request a new one.";
+                clearInterval(timer);
+            }
+        }
+
+        var timer = setInterval(updateCountdown, 1000);
+        updateCountdown();
+    </script>
+
+</body>
+</html>
