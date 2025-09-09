@@ -76,7 +76,18 @@ def resend_code(request):
 
 
 
+def request_otp(request, user):
+    profile, _ = Profile.objects.get_or_create(user=user)
+    code = profile.generate_verification_code()
+    send_verification_email(user.email, code)
 
+    request.session['otp_user_id'] = user.id
+    messages.info(request, "A verification code has been sent to your email.")
+    return redirect("verify_otp")
+
+
+
+from django.contrib.auth import login, get_user_model
 User = get_user_model()
 
 def verify_otp(request):
@@ -86,7 +97,7 @@ def verify_otp(request):
         return redirect('login_view')
 
     user = User.objects.get(id=user_id)
-    profile, created = Profile.objects.get_or_create(user=user)
+    profile, _ = Profile.objects.get_or_create(user=user)
 
     if request.method == "POST":
         code = request.POST.get("code")
@@ -100,14 +111,14 @@ def verify_otp(request):
             profile.save()
             messages.error(request, f"Incorrect code. Remaining attempts: {3 - profile.code_attempts}")
         else:
-            # SUCCESS: log in the user with backend specified
-            backend = 'django.contrib.auth.backends.ModelBackend'  # default backend
+            # ✅ Success
+            backend = 'django.contrib.auth.backends.ModelBackend'
             login(request, user, backend=backend)
 
+            # Clear OTP after success
             profile.verification_code = None
             profile.code_attempts = 0
             profile.save()
-            messages.success(request, "Email verified successfully!")
             return redirect(request.session.get('next_url', 'home_show'))
 
     expiry_time = int(profile.code_created_at.timestamp() + settings.OTP_VALIDITY_MINUTES*60) if profile.code_created_at else 0
@@ -118,6 +129,7 @@ def verify_otp(request):
         "expiry_time": expiry_time,
         "attempts_left": attempts_left
     })
+
 
 
 @require_POST
