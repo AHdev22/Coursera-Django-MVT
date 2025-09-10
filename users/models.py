@@ -7,6 +7,7 @@ from .utils import generate_otp
 class Profile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     phone = models.CharField(max_length=20, blank=True)
+    phone_code_attempts = models.IntegerField(default=0)
     profile_image = models.ImageField(upload_to='profiles/', default='profiles/profile_login.png')
     verification_code = models.CharField(max_length=6, blank=True, null=True)
     code_created_at = models.DateTimeField(blank=True, null=True)
@@ -31,3 +32,5 @@ class Profile(models.Model):
     def can_attempt(self):
         """Limit attempts (e.g. 3 tries)."""
         return self.code_attempts < 3
+
+
