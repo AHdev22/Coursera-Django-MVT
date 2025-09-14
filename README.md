@@ -67,3 +67,9 @@ This project is intentionally simple so you can learn the full stack flow:
 ---
 
 ## 📂 Project Structure
+- littlelemon/ — Django project settings
+- restaurant/ — main app (models, views, templates for menu + reservations)
+- users/ — auth, OTP models & views, token endpoints
+- templates/ — HTML templates (menu, auth, OTP form, reservations)
+- static/ — CSS, JS, images
+- manage.py
